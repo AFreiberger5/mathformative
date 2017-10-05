@@ -34,7 +34,6 @@ namespace VektorenFormativ
             return c;
         }
 
-        //todo: figure ou what the fuck this means ( negative version of vector I guess? what would you need that for)
         public static Vector operator -(Vector _a)
         {
             Vector c = new Vector(-_a.x,
@@ -64,8 +63,20 @@ namespace VektorenFormativ
 
         public override bool Equals(object _obj)
         {
-            return base.Equals(_obj);
-           
+            if (_obj is Vector)
+            {
+                Vector c = (Vector)_obj;
+                if(c.x == this.x && c.y == this.y && c.z == this.z)
+                {
+                    return true;
+                }
+                else
+                return false;
+            }
+            else
+            {
+                return false;
+            }            
         }
 
         public override int GetHashCode()

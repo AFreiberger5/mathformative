@@ -5,17 +5,14 @@ namespace VektorenFormativ
     public class Matrix
     {
         private readonly float[,] Values = new float[4, 4];
-        public float x;
-        public float y;
        
         public Matrix()
         {
-            x = 0;
-            y = 0;
         }
 
         public Matrix(float[,] _values)
         {
+            Values = _values;   
         }
 
         public static Matrix Translate(Vector _v)
@@ -49,6 +46,7 @@ namespace VektorenFormativ
 
         public static Matrix operator *(Matrix _m1, Matrix _m2)
         {
+            Matrix result = new Matrix();
         }
 
         public static Vector operator *(Matrix _m, Vector _v)
