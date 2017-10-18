@@ -9,9 +9,13 @@ namespace VektorenFormativ
         public Matrix()
         {
         }
-        
+
         public Matrix(float[,] _values)
         {
+            if (_values.GetLength(0) != 4 || _values.GetLength(1) != 4)
+            {
+                throw new System.Exception();
+            }
             Values = _values;
         }
 
@@ -37,7 +41,7 @@ namespace VektorenFormativ
 
         private static Matrix RotateX(float _x)
         {
-            _x *= (float)Math.PI * 2/360;
+            _x *= (float)Math.PI * 2 / 360;
             Math.Round(Math.Cos(_x), 2);
             Matrix Rotation = new Matrix();
             Rotation.Values[0, 0] = 1f;
@@ -55,10 +59,10 @@ namespace VektorenFormativ
 
             Matrix Rotation = new Matrix();
             Rotation.Values[1, 1] = 1f;
-            Rotation.Values[0, 0] = (float)Math.Round(Math.Cos(_y),2);
-            Rotation.Values[0, 2] = (float)-(Math.Round(Math.Sin(_y),2));
-            Rotation.Values[2, 0] = (float)Math.Round(Math.Sin(_y),2);
-            Rotation.Values[2, 2] = (float)Math.Round(Math.Cos(_y),2);
+            Rotation.Values[0, 0] = (float)Math.Round(Math.Cos(_y), 2);
+            Rotation.Values[0, 2] = (float)-(Math.Round(Math.Sin(_y), 2));
+            Rotation.Values[2, 0] = (float)Math.Round(Math.Sin(_y), 2);
+            Rotation.Values[2, 2] = (float)Math.Round(Math.Cos(_y), 2);
             Rotation.Values[3, 3] = 1f;
             return Rotation;
         }
@@ -69,10 +73,10 @@ namespace VektorenFormativ
 
             Matrix Rotation = new Matrix();
             Rotation.Values[2, 2] = 1f;
-            Rotation.Values[0, 0] = (float)Math.Round(Math.Cos(_z),2);
-            Rotation.Values[1, 1] = (float)Math.Round(Math.Cos(_z),2);
-            Rotation.Values[0, 1] = (float)Math.Round(Math.Sin(_z),2);
-            Rotation.Values[1, 0] = (float)-Math.Round((Math.Sin(_z)),2);
+            Rotation.Values[0, 0] = (float)Math.Round(Math.Cos(_z), 2);
+            Rotation.Values[1, 1] = (float)Math.Round(Math.Cos(_z), 2);
+            Rotation.Values[0, 1] = (float)Math.Round(Math.Sin(_z), 2);
+            Rotation.Values[1, 0] = (float)-Math.Round((Math.Sin(_z)), 2);
             Rotation.Values[3, 3] = 1f;
             return Rotation;
         }
@@ -96,33 +100,44 @@ namespace VektorenFormativ
 
         public static Matrix operator *(Matrix _m1, Matrix _m2)
         {
-            // nur für 4x4 Matrizen
-            Matrix Result = new Matrix();
-            for (int i = 0; i < 4; i++)
+            if (_m1.Values.GetLength(0) != _m2.Values.GetLength(0) ||
+               _m1.Values.GetLength(1) != _m2.Values.GetLength(1))
             {
-                for (int j = 0; j < 4; j++)
+                throw new System.Exception();
+            }
+            // nur für 4x4 Matrizen
+            //Matrix Result = new Matrix();
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    for (int j = 0; j < 4; j++)
+            //    {
+            //        for (int k = 0; k < 4; k++)
+            //        {
+            //            Result.Values[i, j] += _m1.Values[i, k] * _m2.Values[k, j];
+            //        }
+            //    }
+            //}
+            Matrix Result = new Matrix();
+            for (int i = 0; i < _m1.Values.GetLength(0); i++)
+            {
+                for (int j = 0; j < _m1.Values.GetLength(1); j++)
                 {
-                    for (int k = 0; k < 4; k++)
+                    for (int k = 0; k < _m1.Values.GetLength(0); k++)
                     {
                         Result.Values[i, j] += _m1.Values[i, k] * _m2.Values[k, j];
                     }
                 }
             }
-
             return Result;
         }
 
         public static Vector operator *(Matrix _m, Vector _v)
         {
-            //Vector NewVector = new Vector();
-            //NewVector.x = ((_v.x * _m.Values[0, 0]) + (_v.x * _m.Values[1, 0]) + (_v.x * _m.Values[2, 0]) + (1 * _m.Values[3, 0]));
-            //NewVector.y = ((_v.y * _m.Values[0, 1]) + (_v.y * _m.Values[1, 1]) + (_v.y * _m.Values[2, 1]) + (1 * _m.Values[3, 1]));
-            //NewVector.z = ((_v.z * _m.Values[0, 2]) + (_v.z * _m.Values[1, 2]) + (_v.z * _m.Values[2, 2]) + (1 * _m.Values[3, 2]));
-
-             Vector NewVector = new Vector();
-             NewVector.x = ((_v.x * _m.Values[0, 0]) + (_v.y * _m.Values[1, 0]) + (_v.z * _m.Values[2, 0]) + (1 * _m.Values[3, 0]));
-             NewVector.y = ((_v.x * _m.Values[0, 1]) + (_v.y * _m.Values[1, 1]) + (_v.z * _m.Values[2, 1]) + (1 * _m.Values[3, 1]));
-             NewVector.z = ((_v.x * _m.Values[0, 2]) + (_v.y * _m.Values[1, 2]) + (_v.z * _m.Values[2, 2]) + (1 * _m.Values[3, 2]));
+            
+            Vector NewVector = new Vector();
+            NewVector.x = ((_v.x * _m.Values[0, 0]) + (_v.y * _m.Values[1, 0]) + (_v.z * _m.Values[2, 0]) + (1 * _m.Values[3, 0]));
+            NewVector.y = ((_v.x * _m.Values[0, 1]) + (_v.y * _m.Values[1, 1]) + (_v.z * _m.Values[2, 1]) + (1 * _m.Values[3, 1]));
+            NewVector.z = ((_v.x * _m.Values[0, 2]) + (_v.y * _m.Values[1, 2]) + (_v.z * _m.Values[2, 2]) + (1 * _m.Values[3, 2]));
 
             return NewVector;
         }

@@ -68,7 +68,7 @@ namespace VektorenFormativ
             if (_obj is Vector)
             {
                 Vector c = (Vector)_obj;
-                if(c.x == this.x && c.y == this.y && c.z == this.z)
+                if(c.x == x && c.y == y && c.z == z)
                 {
                     return true;
                 }
