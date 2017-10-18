@@ -7,6 +7,7 @@ namespace VektorenFormativ
         public float x;
         public float y;
         public float z;
+        
 
         public Vector(float _x, float _y, float _z)
         {
@@ -14,6 +15,7 @@ namespace VektorenFormativ
             x = _x;
             y = _y;
             z = _z;
+            
         }
 
         public static Vector operator +(Vector _a, Vector _b)
